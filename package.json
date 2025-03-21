@@ -4,7 +4,6 @@
   "private": true,
   "scripts": {
     "dev": "node server.js",
-    "build": "tsc",
     "start": "node server.js",
     "test": "jest"
   },
