@@ -30,8 +30,8 @@ dotenv.config({ path: ".env.development.local" });
 
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
-const BASE_URL = process.env.NEXT_PUBLIC_FRONT_BASE_URL;
-const BACK_BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
+const BASE_URL = process.env.FRONT_BASE_URL;
+const BACK_BASE_URL = process.env.BASE_URL
 
 app.use(express.json());
 app.use(cors({

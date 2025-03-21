@@ -7,8 +7,8 @@ const router = express.Router();
 
 dotenv.config();
 
-const API_KEY = process.env.NEXT_PUBLIC_RAPIDAPI_KEY
-const API_HOST = process.env.NEXT_PUBLIC_RAPIDAPI_HOST
+const API_KEY = process.env.RAPIDAPI_KEY
+const API_HOST = process.env.RAPIDAPI_HOST
 
 // Route to get all exercises from ExerciseDB API
 router.get('/exercises-from-api', async (req, res) => {
