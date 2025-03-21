@@ -5,25 +5,25 @@ import MongoStore from "connect-mongo";
 import cors from 'cors';
 import dotenv from 'dotenv';
 import passport from 'passport';
-import keys from './config/keys.js';
-import User from './models/user.js';
+import keys from './Gym-Guru-Backend/config/keys.js';
+import User from './Gym-Guru-Backend/models/user.js';
 import session from "express-session";
 import GoogleStrategy from 'passport-google-oauth20';
-import './services/passport.js';
+import './Gym-Guru-Backend/services/passport.js';
 
 // Routes
-import Authentication from "./controllers/authentication.js"
-import getAPICategories from './routes/getAPICategories.js'
-import getAllAPIExercises from './routes/getAPIAllExercises.js'
-import getCategories from './routes/getCategories.js'
-import getAllExercises from './routes/getAllExercises.js'
-import postSavedExercises from './routes/postSavedExercises.js'
-import deleteSavedExercises from './routes/deleteSavedExercises.js'
-import getSavedExercises from './routes/getSavedExercises.js'
-import getWorkoutDays from './routes/getWorkoutDays.js'
-import postWorkoutExercise from './routes/postWorkoutExercise.js'
-import deleteWorkoutExercise from './routes/deleteWorkoutExercise.js'
-import deleteWorkoutDay from './routes/deleteWorkoutDay.js'
+import Authentication from "./Gym-Guru-Backend/controllers/authentication.js"
+import getAPICategories from './Gym-Guru-Backend/routes/getAPICategories.js'
+import getAllAPIExercises from './Gym-Guru-Backend/routes/getAPIAllExercises.js'
+import getCategories from './Gym-Guru-Backend/routes/getCategories.js'
+import getAllExercises from './Gym-Guru-Backend/routes/getAllExercises.js'
+import postSavedExercises from './Gym-Guru-Backend/routes/postSavedExercises.js'
+import deleteSavedExercises from './Gym-Guru-Backend/routes/deleteSavedExercises.js'
+import getSavedExercises from './Gym-Guru-Backend/routes/getSavedExercises.js'
+import getWorkoutDays from './Gym-Guru-Backend/routes/getWorkoutDays.js'
+import postWorkoutExercise from './Gym-Guru-Backend/routes/postWorkoutExercise.js'
+import deleteWorkoutExercise from './Gym-Guru-Backend/routes/deleteWorkoutExercise.js'
+import deleteWorkoutDay from './Gym-Guru-Backend/routes/deleteWorkoutDay.js'
 
 const app = express();
 dotenv.config({ path: ".env.development.local" });
