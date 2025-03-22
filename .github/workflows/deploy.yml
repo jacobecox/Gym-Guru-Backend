@@ -20,10 +20,10 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t jacob-cox.registry.cpln.io/gym-gurus:${{ github.sha }} .
-          cpln docker push jacob-cox.registry.cpln.io/gym-gurus:${{ github.sha }}
+          docker build -t jacob-cox.registry.cpln.io/gym-gurus:01 .
+          cpln docker push jacob-cox.registry.cpln.io/gym-gurus:01
 
       - name: Deploy to Control Plane
         run: |
-          cpln workload update gym-gurus --image jacob-cox.registry.cpln.io/gym-gurus:${{ github.sha }}
+          cpln workload update gym-gurus --image jacob-cox.registry.cpln.io/gym-gurus:01
           cpln workload deploy gym-gurus
