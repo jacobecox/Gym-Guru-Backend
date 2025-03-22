@@ -1,0 +1,29 @@
+name: Deploy to Control Plane
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Control Plane CLI
+        run: |
+          curl -sL https://github.com/controlplane-com/cpln-cli/releases/latest/download/cpln-linux.tgz | tar xz
+          sudo mv cpln /usr/local/bin/
+
+      - name: Login to Control Plane
+        run: cpln login --token ${{ secrets.CPLN_TOKEN }}
+
+      - name: Build and push Docker image
+        run: |
+          docker build -t jacob-cox.registry.cpln.io/gym-gurus:${{ github.sha }} .
+          cpln docker push jacob-cox.registry.cpln.io/gym-gurus:${{ github.sha }}
+
+      - name: Deploy to Control Plane
+        run: |
+          cpln workload update gym-gurus --image jacob-cox.registry.cpln.io/gym-gurus:${{ github.sha }}
+          cpln workload deploy gym-gurus
