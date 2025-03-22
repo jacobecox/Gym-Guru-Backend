@@ -112,11 +112,11 @@ const handleAuthRedirect = async (req, res) => {
 
       res.redirect(`${BACK_BASE_URL}/pages/login-success?token=${encodeURIComponent(token)}`);
     } catch (error) {
-      console.error("❌ Error generating token:", error);
+      console.error("Error generating token:", error);
       res.redirect(`${BACK_BASE_URL}/pages/login?error=token_generation_failed`);
     }
   } else {
-    console.error("❌ User not authenticated");
+    console.error("User not authenticated");
     res.redirect(`${BACK_BASE_URL}/pages/login?error=auth_failed`);
   }
 };
@@ -134,7 +134,7 @@ mongoose
   .then(() => {
     console.log('🚀 DB Connected!');
     if (process.env.NODE_ENV !== "test") { // Prevent server from starting in test mode
-      const port = process.env.PORT || 8080;
+      const port = process.env.PORT || 5000;
       app.listen(port, () => {
         console.log('😎 Server listening on PORT', port);
       });
