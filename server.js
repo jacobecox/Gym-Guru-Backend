@@ -143,7 +143,7 @@ mongoose
     }
   })
   .catch((err) => {
-    console.log(`❌ DB Connection Error: ${err.message}`);
+    console.log(`❌ DB Connection Error: ${err.message}, This was the used port: ${port} and Mongo URI ${keySet.MONGO_URI}`);
   });
 
 // Non-login required routes
