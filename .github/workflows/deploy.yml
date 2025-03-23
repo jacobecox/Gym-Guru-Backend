@@ -1,29 +1,66 @@
-name: Deploy to Control Plane
+# Control Plane GitHub Action
 
+name: Deploy-To-Control-Plane
+
+# Controls when the workflow will run
 on:
+  # Uncomment the lines you want actions that will cause the workflow to Triggers the workflow on push or pull request events but only for the main branch
+
   push:
     branches: [main]
+  # pull_request:
+  #   branches: [main]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Convert the GitHub secret variables to environment variables for use by the Control Plane CLI
+env:
+  CPLN_ORG: ${{secrets.CPLN_ORG}}
+  CPLN_GVC: ${{secrets.CPLN_GVC_NAME}}
+  CPLN_WORKLOAD: ${{secrets.CPLN_WORKLOAD_NAME}}
+  CPLN_TOKEN: ${{secrets.CPLN_TOKEN}}
+  CPLN_IMAGE: ${{secrets.CPLN_IMAGE_NAME}}
 
 jobs:
-  deploy:
+  deploy-to-control-plane:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v2
+      - name: Check out the repo
+        uses: actions/checkout@v4
 
-      - name: Set up Control Plane CLI
+      - name: Set Short SHA
         run: |
-          curl -sL https://github.com/controlplane-com/cpln-cli/releases/latest/download/cpln-linux.tgz | tar xz
-          sudo mv cpln /usr/local/bin/
+          SHORT_SHA=$(echo "${GITHUB_SHA}" | cut -c1-7)
+          echo "SHORT_SHA=$SHORT_SHA" >> $GITHUB_ENV
 
-      - name: Login to Control Plane
-        run: cpln login --token ${{ secrets.CPLN_TOKEN }}
-
-      - name: Build and push Docker image
+      - name: Install Control Plane CLI
+        shell: bash
         run: |
-          docker build -t jacob-cox.registry.cpln.io/gym-gurus:01 .
-          cpln docker push jacob-cox.registry.cpln.io/gym-gurus:01
+          sudo npm install -g @controlplane/cli
+          cpln --version
 
-      - name: Deploy to Control Plane
+      # Containerize and push the application to the org's private image repository. The tag is the short SHA of the commit.
+      - name: Containerize application and push image
+        shell: bash
         run: |
-          cpln workload update gym-gurus --image jacob-cox.registry.cpln.io/gym-gurus:01
-          cpln workload deploy gym-gurus
+          cpln profile update default --token ${CPLN_TOKEN}
+          cpln image docker-login
+          cpln image build --name ${CPLN_IMAGE}:${SHORT_SHA} --dockerfile ./Dockerfile --push
+
+      - name: Substitute Tokens in Control Plane YAML Files
+        shell: bash
+        working-directory: ./.cpln
+        run: |
+          sed -i "s/ORG_NAME/${CPLN_ORG}/" cpln-gvc.yaml
+          sed -i "s/GVC_NAME/${CPLN_GVC}/" cpln-gvc.yaml
+          sed -i "s/WORKLOAD_NAME/${CPLN_WORKLOAD}/" cpln-workload.yaml
+          sed -i "s/IMAGE_NAME_TAG/${CPLN_IMAGE}:${SHORT_SHA}/" cpln-workload.yaml
+
+      - name: Run CPLN Apply
+        shell: bash
+        working-directory: ./.cpln
+        run: |
+          cpln apply -f cpln-gvc.yaml
+          cpln apply -f cpln-workload.yaml --gvc ${CPLN_GVC}
