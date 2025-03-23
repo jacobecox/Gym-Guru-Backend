@@ -3,12 +3,12 @@ import express from 'express';
 import mongoose from 'mongoose';
 import MongoStore from "connect-mongo";
 import cors from 'cors';
-import dotenv from 'dotenv';
 import passport from 'passport';
 import keys from './src/app/config/keys.js'
 import User from './src/app/models/user.js';
 import session from "express-session";
 import GoogleStrategy from 'passport-google-oauth20';
+import config from './config.js';
 import './src/app/services/passport.js';
 
 // Routes
@@ -26,16 +26,16 @@ import deleteWorkoutExercise from './src/app/routes/deleteWorkoutExercise.js'
 import deleteWorkoutDay from './src/app/routes/deleteWorkoutDay.js'
 
 const app = express();
-dotenv.config({ path: ".env.development.local" });
-
-const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
-const BASE_URL = process.env.FRONT_BASE_URL;
-const BACK_BASE_URL = process.env.BASE_URL
-
 app.use(express.json());
+
+const GOOGLE_CLIENT_SECRET = config.GOOGLE_CLIENT_SECRET;
+const GOOGLE_CLIENT_ID = config.GOOGLE_CLIENT_ID;
+const BASE_URL = config.BASE_URL
+const FRONTEND_URL = config.FRONTEND_URL
+const MONGO_URI = config.MONGO_URI
+
 app.use(cors({
-	origin: BASE_URL,	
+	origin: FRONTEND_URL,	
 	credentials: true,
 }));
 
@@ -46,7 +46,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
-      mongoUrl: process.env.MONGO_URI,
+      mongoUrl: MONGO_URI,
       collectionName: "sessions",
     })
   })
@@ -110,14 +110,14 @@ const handleAuthRedirect = async (req, res) => {
     try {
       const token = await Authentication.userToken(req.user); // ✅ Await the token properly
 
-      res.redirect(`${BACK_BASE_URL}/pages/login-success?token=${encodeURIComponent(token)}`);
+      res.redirect(`${BASE_URL}/pages/login-success?token=${encodeURIComponent(token)}`);
     } catch (error) {
       console.error("Error generating token:", error);
-      res.redirect(`${BACK_BASE_URL}/pages/login?error=token_generation_failed`);
+      res.redirect(`${BASE_URL}/pages/login?error=token_generation_failed`);
     }
   } else {
     console.error("User not authenticated");
-    res.redirect(`${BACK_BASE_URL}/pages/login?error=auth_failed`);
+    res.redirect(`${BASE_URL}/pages/login?error=auth_failed`);
   }
 };
 
@@ -143,7 +143,7 @@ mongoose
     }
   })
   .catch((err) => {
-    console.log(`❌ DB Connection Error: ${err.message}, This was the used port: ${port} and Mongo URI ${keySet.MONGO_URI}`);
+    console.log(`❌ DB Connection Error: ${err.message}`);
   });
 
 // Non-login required routes

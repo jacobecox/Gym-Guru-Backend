@@ -1,14 +1,12 @@
 import express from "express";
 import axios from "axios";
-import dotenv from 'dotenv';
 import Exercise from '../models/exercise.js'
+import config from "../../../config.js";
 
 const router = express.Router();
 
-dotenv.config();
-
-const API_KEY = process.env.RAPIDAPI_KEY
-const API_HOST = process.env.RAPIDAPI_HOST
+const API_KEY = config.RAPIDAPI_KEY
+const API_HOST = config.RAPIDAPI_HOST
 
 // Route to get all exercises from ExerciseDB API
 router.get('/exercises-from-api', async (req, res) => {

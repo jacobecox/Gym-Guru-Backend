@@ -1,15 +1,13 @@
 import express from "express";
 import axios from "axios";
-import dotenv from 'dotenv';
 import MuscleCategory from "../models/muscleCategory.js";
 import EquipmentCategory from "../models/equipmentCategory.js"
+import config from "../../../config.js";
 
 const router = express.Router();
 
-dotenv.config();
-
-const API_KEY = process.env.RAPIDAPI_KEY
-const API_HOST = process.env.RAPIDAPI_HOST
+const API_KEY = config.RAPIDAPI_KEY
+const API_HOST = config.RAPIDAPI_HOST
 
 // Route to fetch Muscle Categories from ExerciseDB API
 router.get('/muscleCategories-from-api', async (req, res) => {
