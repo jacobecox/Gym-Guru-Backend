@@ -5,25 +5,25 @@ import MongoStore from "connect-mongo";
 import cors from 'cors';
 import dotenv from 'dotenv';
 import passport from 'passport';
-import keys from './Gym-Guru-Backend/config/keys.js';
-import User from './Gym-Guru-Backend/models/user.js';
+import keys from './src/app/config/keys.js'
+import User from './src/app/models/user.js';
 import session from "express-session";
 import GoogleStrategy from 'passport-google-oauth20';
-import './Gym-Guru-Backend/services/passport.js';
+import './src/app/services/passport.js';
 
 // Routes
-import Authentication from "./Gym-Guru-Backend/controllers/authentication.js"
-import getAPICategories from './Gym-Guru-Backend/routes/getAPICategories.js'
-import getAllAPIExercises from './Gym-Guru-Backend/routes/getAPIAllExercises.js'
-import getCategories from './Gym-Guru-Backend/routes/getCategories.js'
-import getAllExercises from './Gym-Guru-Backend/routes/getAllExercises.js'
-import postSavedExercises from './Gym-Guru-Backend/routes/postSavedExercises.js'
-import deleteSavedExercises from './Gym-Guru-Backend/routes/deleteSavedExercises.js'
-import getSavedExercises from './Gym-Guru-Backend/routes/getSavedExercises.js'
-import getWorkoutDays from './Gym-Guru-Backend/routes/getWorkoutDays.js'
-import postWorkoutExercise from './Gym-Guru-Backend/routes/postWorkoutExercise.js'
-import deleteWorkoutExercise from './Gym-Guru-Backend/routes/deleteWorkoutExercise.js'
-import deleteWorkoutDay from './Gym-Guru-Backend/routes/deleteWorkoutDay.js'
+import Authentication from "./src/app/controllers/authentication.js"
+import getAPICategories from './src/app/routes/getAPICategories.js'
+import getAllAPIExercises from './src/app/routes/getAPIAllExercises.js'
+import getCategories from './src/app/routes/getCategories.js'
+import getAllExercises from './src/app/routes/getAllExercises.js'
+import postSavedExercises from './src/app/routes/postSavedExercises.js'
+import deleteSavedExercises from './src/app/routes/deleteSavedExercises.js'
+import getSavedExercises from './src/app/routes/getSavedExercises.js'
+import getWorkoutDays from './src/app/routes/getWorkoutDays.js'
+import postWorkoutExercise from './src/app/routes/postWorkoutExercise.js'
+import deleteWorkoutExercise from './src/app/routes/deleteWorkoutExercise.js'
+import deleteWorkoutDay from './src/app/routes/deleteWorkoutDay.js'
 
 const app = express();
 dotenv.config({ path: ".env.development.local" });
@@ -134,7 +134,9 @@ mongoose
   .then(() => {
     console.log('🚀 DB Connected!');
     if (process.env.NODE_ENV !== "test") { // Prevent server from starting in test mode
-      const port = process.env.PORT || 5000;
+      const port = process.env.PORT || 8080;
+      console.log('port:', port)
+      console.log('mongo URI:', keySet.MONGO_URI)
       app.listen(port, () => {
         console.log('😎 Server listening on PORT', port);
       });
