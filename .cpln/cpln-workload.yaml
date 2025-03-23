@@ -7,7 +7,7 @@ spec:
       env: []
       name: "actions-example"
       image: "//image/IMAGE_NAME_TAG"
-      memory: 128Mi
+      memory: 128Mi 
       port: 8080
       readinessProbe:
         failureThreshold: 3
