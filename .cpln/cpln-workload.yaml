@@ -8,13 +8,13 @@ spec:
       name: "actions-example"
       image: "//image/IMAGE_NAME_TAG"
       memory: 128Mi
-      port: 8080
+      port: 5000
       readinessProbe:
         failureThreshold: 3
         httpGet:
           httpHeaders: []
           path: /
-          port: 8080
+          port: 5000
           scheme: HTTP
         initialDelaySeconds: 0
         periodSeconds: 10
