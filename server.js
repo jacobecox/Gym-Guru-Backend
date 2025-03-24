@@ -35,8 +35,8 @@ const FRONTEND_URL = config.FRONTEND_URL
 const MONGO_URI = config.MONGO_URI
 
 const allowedOrigins = [
-  'http://localhost:3000',       // For local development
-  FRONTEND_URL        // Your production frontend
+  'http://localhost:3000',  // Local development
+  FRONTEND_URL              // Production frontend
 ];
 
 app.use(cors({
@@ -81,12 +81,12 @@ passport.deserializeUser(async (id, done) => {
 
 // Google Oauth functionality. We send client details through link which reroutes user to Google to login. Google returns via callback route with user's data
 passport.use(
-  "google",
+  "google", 
   new GoogleStrategy(
     {
       clientID: GOOGLE_CLIENT_ID,
       clientSecret: GOOGLE_CLIENT_SECRET,
-      callbackURL: "/auth/google/callback",
+      callbackURL: `${BASE_URL}/auth/google/callback`,
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
