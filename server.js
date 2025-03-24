@@ -110,14 +110,14 @@ const handleAuthRedirect = async (req, res) => {
     try {
       const token = await Authentication.userToken(req.user); // ✅ Await the token properly
 
-      res.redirect(`${BASE_URL}/pages/login-success?token=${encodeURIComponent(token)}`);
+      res.redirect(`${FRONTEND_URL}/pages/login-success?token=${encodeURIComponent(token)}`);
     } catch (error) {
       console.error("Error generating token:", error);
-      res.redirect(`${BASE_URL}/pages/login?error=token_generation_failed`);
+      res.redirect(`${FRONTEND_URL}/pages/login?error=token_generation_failed`);
     }
   } else {
     console.error("User not authenticated");
-    res.redirect(`${BASE_URL}/pages/login?error=auth_failed`);
+    res.redirect(`${FRONTEND_URL}/pages/login?error=auth_failed`);
   }
 };
 
