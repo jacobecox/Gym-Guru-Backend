@@ -34,9 +34,20 @@ const BASE_URL = config.BASE_URL
 const FRONTEND_URL = config.FRONTEND_URL
 const MONGO_URI = config.MONGO_URI
 
+const allowedOrigins = [
+  'http://localhost:3000',       // For local development
+  FRONTEND_URL        // Your production frontend
+];
+
 app.use(cors({
-	origin: FRONTEND_URL,	
-	credentials: true,
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true  // Allows cookies and auth headers
 }));
 
 // Storing sessions inside db used
